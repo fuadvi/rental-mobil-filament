@@ -141,7 +141,7 @@ class CarResource extends Resource
 
                 TextColumn::make('car_type')
                 ->label(__('Tipe Mobil'))
-                    // ->sortable()
+                    ->sortable()
                     ->searchable(),
 
                 TextColumn::make('isDriver')
