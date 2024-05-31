@@ -2,25 +2,18 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\CarResource\Pages;
 use App\Models\Car;
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
-use Filament\Forms\Components\Radio;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Forms\Components\TextInput;
-use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
-use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\CarResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\CarResource\RelationManagers;
-use Illuminate\Support\Facades\Storage;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 
 class CarResource extends Resource
 {
@@ -30,7 +23,7 @@ class CarResource extends Resource
 
     public static function form(Form $form): Form
     {
-      return $form
+        return $form
           ->schema([
           TextInput::make('title')
           ->label(__('Nama Mobil'))
@@ -85,8 +78,8 @@ class CarResource extends Resource
             Select::make('car_type')
             ->label(__('Tipe Mobil'))
             ->options([
-              'sedan' => 'Sedan',
-              'suv' => 'SUV',
+              'sedan'   => 'Sedan',
+              'suv'     => 'SUV',
               'minivan' => 'Minivan',
             ])->validationMessages([
               'required' => 'field tipe mobil tidak boleh kosong.',
@@ -110,13 +103,13 @@ class CarResource extends Resource
               ->columnSpanFull()
               ->validationMessages([
                 'required' => 'field upload gambar tidak boleh kosong.',
-            ])
+            ]),
           ]);
     }
 
     public static function table(Table $table): Table
     {
-      return $table
+        return $table
           ->columns([
               TextColumn::make('title')
               ->label(__('Nama Mobil'))
@@ -127,8 +120,8 @@ class CarResource extends Resource
               ->label(__('Deskripsi'))
                   ->searchable()
                   ->formatStateUsing(function ($state) {
-                    return strip_tags($state); // Menghilangkan tag HTML
-                })
+                      return strip_tags($state); // Menghilangkan tag HTML
+                  })
                 ->limit(50),
 
                 TextColumn::make('price')
@@ -148,7 +141,7 @@ class CarResource extends Resource
 
                 TextColumn::make('car_type')
                 ->label(__('Tipe Mobil'))
-                    ->sortable()
+                    // ->sortable()
                     ->searchable(),
 
                 TextColumn::make('isDriver')
@@ -161,7 +154,7 @@ class CarResource extends Resource
                   ImageColumn::make('image')
                       ->label(__('Gambar'))
                       ->getStateUsing(function (Car $record): string {
-                        return asset("storage/{$record->image}");
+                          return asset("storage/{$record->image}");
                       })
                       ->url(fn ($record) => asset("storage/{$record->image}"))
                       ->rounded()
@@ -171,7 +164,7 @@ class CarResource extends Resource
                   ->dateTime()
                   ->sortable()
                   ->toggleable(isToggledHiddenByDefault: true),
-                  
+
               TextColumn::make('updated_at')
                   ->dateTime()
                   ->sortable()
@@ -200,9 +193,9 @@ class CarResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCars::route('/'),
+            'index'  => Pages\ListCars::route('/'),
             'create' => Pages\CreateCar::route('/create'),
-            'edit' => Pages\EditCar::route('/{record}/edit'),
+            'edit'   => Pages\EditCar::route('/{record}/edit'),
         ];
     }
 }
