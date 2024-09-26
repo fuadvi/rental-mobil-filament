@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BannerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,3 +15,5 @@ Route::controller(AuthController::class)
   Route::post('signin','signin');
   Route::post('signup','signup');
 });
+
+Route::resource('banner', BannerController::class);
