@@ -212,9 +212,7 @@ class CarResource extends Resource
     }
 
     public static function getNavigationIcon(): string
-  {
-      return 'heroicon-o-truck'; // untuk Data Mobil
-      // return 'heroicon-o-clipboard-document-list'; // untuk Jenis Sewa
-      // return 'heroicon-o-map'; // untuk Data Paket Tour
-  }
+    {
+        return 'heroicon-o-truck'; // untuk Data Mobil
+    }
 }
