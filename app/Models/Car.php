@@ -26,4 +26,9 @@ class Car extends Model
     {
         return $this->belongsToMany(Tour::class, 'car_tours');
     }
+
+    public function leaseTypes(): BelongsToMany
+    {
+        return $this->belongsToMany(LeaseType::class, 'car_lease_types');
+    }
 }

@@ -2,8 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use App\Models\Car;
-use Filament\Forms;
 use App\Models\Tour;
 use Filament\Tables;
 use Filament\Forms\Form;
@@ -144,5 +142,20 @@ class TourResource extends Resource
             'create' => Pages\CreateTour::route('/create'),
             'edit' => Pages\EditTour::route('/{record}/edit'),
         ];
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('Data Paket Tour');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Data Paket Tour');
+    }
+
+    public static function getNavigationIcon(): string
+    {
+        return 'heroicon-o-map'; // untuk Data Paket Tour
     }
 }

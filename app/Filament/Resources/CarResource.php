@@ -200,4 +200,21 @@ class CarResource extends Resource
             'edit' => Pages\EditCar::route('/{record}/edit'),
         ];
     }
+
+    public static function getModelLabel(): string
+    {
+        return __('Data Mobil');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Data Mobil');
+    }
+
+    public static function getNavigationIcon(): string
+  {
+      return 'heroicon-o-truck'; // untuk Data Mobil
+      // return 'heroicon-o-clipboard-document-list'; // untuk Jenis Sewa
+      // return 'heroicon-o-map'; // untuk Data Paket Tour
+  }
 }
