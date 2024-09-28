@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CarController;
+use App\Http\Controllers\TourController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,3 +25,5 @@ Route::controller(CarController::class)
   Route::get('car','listCar');
   Route::get('drop-bandara','listCarDropBandara');
 });
+
+Route::resource("tours", TourController::class);
