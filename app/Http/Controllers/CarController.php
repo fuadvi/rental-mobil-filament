@@ -6,7 +6,7 @@ use App\Filters\SearchByTitle;
 use App\Http\Traits\ResponFormater;
 use App\Models\Car;
 use Illuminate\Http\Request;
-use Illuminate\Pipeline\Pipeline;
+use Illuminate\Support\Facades\Pipeline;
 use Symfony\Component\HttpFoundation\Response;
 
 class CarController extends Controller
@@ -25,10 +25,11 @@ class CarController extends Controller
     {
         $cars = Car::whereRelation('leaseTypes',"lease_types.id", 1);
 
-        $data = app(Pipeline::class)->send($cars)
+        $data = Pipeline::send($cars)
             ->through([
                 SearchByTitle::class
-            ])->thenReturn()
+            ])
+            ->thenReturn()
             ->paginate($request->per_page ?? config('setting.limit'));
 
         return $this->success("list mobil drop bandara", $data, Response::HTTP_OK);
