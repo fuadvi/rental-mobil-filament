@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BannerController;
+use App\Http\Controllers\CarController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +18,9 @@ Route::controller(AuthController::class)
 });
 
 Route::resource('banner', BannerController::class);
+
+Route::controller(CarController::class)
+->group(function(){
+  Route::get('car','listCar');
+  Route::get('drop-bandara','listCarDropBandara');
+});

@@ -14,8 +14,9 @@ class BannerController extends Controller
     {
       return $this->success(
         "list banner",
-      Banner::paginate($request->per_page ?? config('setting.limit')),
-      Response::HTTP_OK
+      Banner::paginate(
+        $request->per_page ?? config('setting.limit')),
+        Response::HTTP_OK
       );
     }
 }

@@ -9,6 +9,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
 
+use function Illuminate\Support\defer;
+
 class AuthController extends Controller
 {
 
@@ -40,7 +42,7 @@ class AuthController extends Controller
     $data = $request->validated();
     $data['password'] =  Hash::make($data['password']);
 
-    User::create($data);
+    defer(fn () => User::create($data) ) ;
 
     return $this->success("berhasil mendaftar akun", null, Response::HTTP_CREATED);
    }
