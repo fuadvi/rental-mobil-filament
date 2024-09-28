@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
@@ -17,6 +18,15 @@ class AppServiceProvider extends ServiceProvider
         //
     }
 
+    private function logoutAndAbort() {
+      if (Auth::check())
+      {
+        Auth::logout();
+      }
+      abort(404);
+    }
+
+
     /**
      * Bootstrap any application services.
      */
@@ -25,7 +35,7 @@ class AppServiceProvider extends ServiceProvider
         Model::shouldBeStrict();
 
         Gate::before(function (User $user, string $ability) {
-          return $user->isSuperAdmin() ? true: abort(404);
+          return $user->isSuperAdmin() ? true: $this->logoutAndAbort();
       });
     }
 }
