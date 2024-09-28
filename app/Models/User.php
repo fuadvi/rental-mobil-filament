@@ -3,14 +3,18 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Althinect\FilamentSpatieRolesPermissions\Concerns\HasSuperAdmin;
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasApiTokens;
+    use  HasRoles;
+    use HasSuperAdmin;
 
     /**
      * The attributes that are mass assignable.
