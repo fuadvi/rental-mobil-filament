@@ -34,6 +34,14 @@ class AppServiceProvider extends ServiceProvider
     {
         Model::shouldBeStrict();
 
+          if ((bool) env('HTTPS', true)) {
+              $this->app['url']->forceScheme('https');
+          } else {
+              $this->app['url']->forceScheme('http');
+          }
+
+          // $this->app['request']->server->set('HTTPS', env('HTTPS'));
+
         Gate::before(function (User $user, string $ability) {
           return $user->isSuperAdmin() ? true: $this->logoutAndAbort();
       });
