@@ -42,8 +42,8 @@ class AppServiceProvider extends ServiceProvider
 
           // $this->app['request']->server->set('HTTPS', env('HTTPS'));
 
-        Gate::before(function (User $user, string $ability) {
-          return $user->isSuperAdmin() ? true: $this->logoutAndAbort();
-      });
+      //   Gate::before(function (User $user, string $ability) {
+      //     return $user->isSuperAdmin() ? true: $this->logoutAndAbort();
+      // });
     }
 }
