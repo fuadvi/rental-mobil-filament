@@ -29,7 +29,7 @@ class BannerResource extends Resource
                     ->label(__('Gambar Banner'))
                     ->required()
                     ->image()
-                    ->maxSize(10240)// maksimal 3MB
+//                    ->maxSize(10240)
                     ->columnSpanFull()
                     ->validationMessages([
                         'required' => 'field upload gambar tidak boleh kosong.',
