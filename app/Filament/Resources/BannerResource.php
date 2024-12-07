@@ -44,9 +44,11 @@ class BannerResource extends Resource
               ImageColumn::make('image')
               ->label(__('Gambar'))
               ->getStateUsing(function (Banner $record): string {
-                  return asset("storage/{$record->image}");
+//                  return asset("storage/{$record->image}");
+                  return $record->image;
               })
-              ->url(fn ($record) => asset("storage/{$record->image}"))
+//              ->url(fn ($record) => asset("storage/{$record->image}"))
+              ->url(fn ($record) => $record->image)
               ->rounded()
               ->size(250, 250)
               ->alignCenter(),

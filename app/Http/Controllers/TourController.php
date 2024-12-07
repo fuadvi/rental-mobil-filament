@@ -17,4 +17,11 @@ class TourController extends Controller
 
       return $this->success("list paket wisata", $tours, Response::HTTP_OK);
     }
+
+  public function show($slug)
+  {
+    $tour = Tour::with('cars:id,title,image')->whereSlug($slug)->firstOrFail();
+
+    return $this->success("list paket wisata", $tour, Response::HTTP_OK);
+  }
 }

@@ -3,8 +3,11 @@
 namespace App\Filament\Resources;
 
 use App\Models\Tour;
+use Filament\Forms\Components\FileUpload;
+use Filament\Resources\Pages\CreateRecord;
 use Filament\Tables;
 use Filament\Forms\Form;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Select;
@@ -65,6 +68,20 @@ class TourResource extends Resource
                     'required' => 'field durasi tour tidak boleh kosong.',
                 ]),
 
+                FileUpload::make('image')
+                  ->label(__('Gambar Tour'))
+                  ->image()
+                  ->maxSize(2024) // maksimal 1MB
+                  ->directory('tours')
+                  ->preserveFilenames()
+                  ->columnSpanFull()
+                  ->required(fn ($livewire) => $livewire instanceof CreateRecord) // Hanya wajib di create
+                  ->validationMessages([
+                    'required' => 'Field upload gambar tidak boleh kosong.',
+                  ]),
+
+
+
                 RichEditor::make('description')
                   ->label(__('Keterangan'))
                   ->required()
@@ -74,7 +91,10 @@ class TourResource extends Resource
                       'required' => 'field keterangan tidak boleh kosong.',
                   ]),
 
+
                 ]),
+
+
 
               // Group::make()->schema([
               //   Section::make('daftar mobil')->schema([
@@ -113,6 +133,17 @@ class TourResource extends Resource
                   return strip_tags($state); // Menghilangkan tag HTML
               })
               ->limit(50),
+
+              ImageColumn::make('image')
+                ->label(__('Gambar'))
+                ->getStateUsing(function (Tour $record): string {
+//                  return asset("storage/{$record->image}");
+                  return $record->image;
+                })
+//                ->url(fn ($record) => asset("storage/{$record->image}"))
+                ->url(fn ($record) => $record->image)
+                ->rounded()
+                ->toggleable(isToggledHiddenByDefault: true),
 
             ])
             ->filters([

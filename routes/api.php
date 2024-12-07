@@ -24,6 +24,7 @@ Route::controller(CarController::class)
 ->group(function(){
   Route::get('car','listCar');
   Route::get('drop-bandara','listCarDropBandara');
+  Route::get('car/{slug}','show');
 });
 
 Route::resource("tours", TourController::class);

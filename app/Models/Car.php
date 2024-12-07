@@ -41,6 +41,10 @@ class Car extends Model
         static::creating(function ($car) {
          $car->slug = Str::slug($car->title);
         });
+
+        static::updating(function ($car) {
+          $car->slug = Str::slug($car->title);
+        });
     }
 
     public function tours(): BelongsToMany

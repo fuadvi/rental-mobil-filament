@@ -35,4 +35,10 @@ class CarController extends Controller
         return $this->success("list mobil drop bandara", $data, Response::HTTP_OK);
 
     }
+
+    public function show($slug)
+    {
+      $car = Car::with(['leaseTypes','tours'])->whereSlug($slug)->firstOrFail();
+      return $this->success("list mobil drop bandara", $car, Response::HTTP_OK);
+    }
 }
