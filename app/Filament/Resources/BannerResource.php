@@ -29,6 +29,7 @@ class BannerResource extends Resource
                     ->label(__('Gambar Banner'))
                     ->required()
                     ->image()
+                    ->optimize('webp')
 //                    ->maxSize(10240)
                     ->columnSpanFull()
                     ->validationMessages([
