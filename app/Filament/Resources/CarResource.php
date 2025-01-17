@@ -103,6 +103,7 @@ class CarResource extends Resource
                     ->required()
                     ->image()
                     ->maxSize(2024) // maksimal 1MB
+                    ->optimize('webp')
                     ->columnSpanFull()
                     ->validationMessages([
                         'required' => 'field upload gambar tidak boleh kosong.',

@@ -18,6 +18,7 @@ use App\Filament\Resources\LeaseTypeResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\LeaseTypeResource\RelationManagers;
 use App\Filament\Resources\LeaseTypeResource\RelationManagers\CarsRelationManager;
+use Joshembling\ImageOptimizer\Components\SpatieMediaLibraryFileUpload;
 
 class LeaseTypeResource extends Resource
 {
@@ -48,13 +49,14 @@ class LeaseTypeResource extends Resource
                     ]),
 
 
-                    FileUpload::make('image')
-                    ->label(__('Gambar Jenis Sewa'))
-                    ->image()
-                    ->maxSize(2024) // maksimal 1MB
-                    ->columnSpanFull(),
-
-
+              SpatieMediaLibraryFileUpload::make('image')
+                ->label(__('Gambar Jenis Sewa'))
+                ->collection('default')
+                ->image()
+                ->disk('public')
+                ->visibility('public')
+                ->optimize('webp')
+                ->columnSpanFull(),
             ]);
     }
 
@@ -78,9 +80,9 @@ class LeaseTypeResource extends Resource
               ImageColumn::make('image')
               ->label(__('Gambar'))
               ->getStateUsing(function (LeaseType $record): string {
-                  return asset("storage/{$record->image}");
+                  return $record->getFirstMedia('default')->getUrl();
               })
-              ->url(fn ($record) => asset("storage/{$record->image}"))
+              ->url(fn ($record) => $record->getFirstMedia()->getUrl())
               ->rounded(),
             ])
             ->filters([

@@ -9,10 +9,13 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class LeaseType extends Model
+class LeaseType extends Model implements HasMedia
 {
     use HasFactory;
+    use InteractsWithMedia;
 
     protected $guarded = ['id'];
 
@@ -39,5 +42,11 @@ class LeaseType extends Model
         return Attribute::make(
             get: fn ($value) => asset(Storage::url($value)),
         );
+    }
+
+    public function registerMediaCollections(): void
+    {
+      $this->addMediaCollection('images')
+        ->useDisk('public'); ;
     }
 }

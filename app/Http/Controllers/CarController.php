@@ -39,6 +39,15 @@ class CarController extends Controller
     public function show($slug)
     {
       $car = Car::with(['leaseTypes','tours'])->whereSlug($slug)->firstOrFail();
-      return $this->success("list mobil drop bandara", $car, Response::HTTP_OK);
+
+      $recommendationCars = Car::with(['leaseTypes','tours'])
+        ->whereCarType($car->car_type)
+        ->limit(5)
+        ->get();
+
+      return $this->success("informasi detail mobil", [
+        'detail' => $car,
+        'recommendation' => $recommendationCars
+      ], Response::HTTP_OK);
     }
 }
