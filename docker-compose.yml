@@ -1,0 +1,60 @@
+services:
+    laravel_franken:
+        container_name: laravel_franken
+        image: laravel_franken
+        build: .
+        volumes:
+            - .:/app
+            - ./vendor:/app/vendor
+            - ./storage:/app/storage
+#            - ./Caddyfile:/etc/caddy/Caddyfile
+#            - caddy_data:/data
+#            - caddy_config:/config
+#            - caddy_logs:/var/log/caddy
+        environment:
+            - DB_CONNECTION=pgsql
+            - DB_HOST=postgres
+            - DB_PORT=5432
+            - DB_DATABASE=rental_mobil_filament
+            - DB_USERNAME=myuser
+            - DB_PASSWORD=mypassword
+            - APP_ENV=local
+            - APP_DEBUG=true
+        ports:
+            -   8000:8000
+        env_file:
+            -   .env
+        depends_on:
+            postgres:
+                condition: service_healthy
+        networks:
+            - travel_network
+
+    postgres:
+        image: postgres:15
+        container_name: db_travel
+        environment:
+            POSTGRES_USER: myuser
+            POSTGRES_PASSWORD: mypassword
+            POSTGRES_DB: rental_mobil_filament
+        ports:
+            - "5432:5432"
+        volumes:
+            - travel_data:/var/lib/postgresql/data
+        healthcheck:
+            test: [ "CMD-SHELL", "pg_isready -U myuser -d rental_mobil_filament" ]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+        networks:
+            - travel_network
+
+volumes:
+    travel_data:
+#    caddy_data:
+#    caddy_config:
+#    caddy_logs:
+
+networks:
+    travel_network:
+        driver: bridge
