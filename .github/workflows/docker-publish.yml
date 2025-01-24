@@ -1,4 +1,4 @@
-name: Docker Publish
+name: Docker Publish and Deploy to EC2
 
 on:
   push:
@@ -6,22 +6,40 @@ on:
       - main
 
 jobs:
-  build-and-push:
+  build-and-deploy:
     runs-on: ubuntu-latest
     environment: rental_mobil # Pastikan sesuai dengan nama environment Anda
     steps:
+      # Step 1: Checkout code
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Step 2: Log in to DockerHub
       - name: Log in to DockerHub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      # Step 3: Build and push Docker image
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
           context: .
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/laravel_franken:latest
+
+      # Step 4: Deploy to EC2 Server
+      - name: Deploy to EC2 Server
+        run: |
+          ssh -o StrictHostKeyChecking=no -i "${{ secrets.AWS_EC2_KEY }}" ec2-user@${{ secrets.AWS_EC2_IP }} << 'EOF'
+          # Pull the latest Docker image from Docker Hub
+          docker pull ${{ secrets.DOCKER_USERNAME }}/laravel_franken:latest
+
+          # Stop and remove the old container (if exists)
+          docker stop laravel_app || true
+          docker rm laravel_app || true
+
+          # Run the new container
+          docker run -d --name laravel_app -p 80:80 ${{ secrets.DOCKER_USERNAME }}/laravel_franken:latest
+          EOF
