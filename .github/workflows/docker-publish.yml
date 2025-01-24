@@ -8,6 +8,7 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    environment: rental_mobil # Pastikan sesuai dengan nama environment Anda
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -23,4 +24,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/laravel_franken:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/myapp:latest
