@@ -37,12 +37,12 @@ jobs:
 
       - name: Debug SSH Connection
         run: |
-          ssh -vvv -o StrictHostKeyChecking=no -i private_key.pem ec2-user@${{ secrets.AWS_EC2_IP }} "echo Connected successfully!"
+          ssh -vvv -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.AWS_EC2_IP }} "echo Connected successfully!"
 
       # Step 5: Deploy ke EC2 Server
       - name: Deploy to EC2 Server
         run: |
-          ssh -o StrictHostKeyChecking=no -i private_key.pem ec2-user@${{ secrets.AWS_EC2_IP }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.AWS_EC2_IP }} << 'EOF'
 
           # Pull image terbaru dari DockerHub
           docker pull ${{ secrets.DOCKER_USERNAME }}/laravel_franken:latest
