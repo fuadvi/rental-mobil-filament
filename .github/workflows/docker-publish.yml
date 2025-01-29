@@ -8,7 +8,7 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    environment: rental_mobil # Sesuaikan dengan nama environment Anda
+    environment: rental_mobil
     steps:
       # Step 1: Checkout kode dari repository
       - name: Checkout code
@@ -32,8 +32,12 @@ jobs:
       # Step 4: Simpan SSH Key ke File
       - name: Create SSH Key File
         run: |
-          echo "${{ secrets.AWS_EC2_KEY }}" > private_key.pem
+          echo "${{ secrets.AWS_EC2_KEY }}" | tr -d '\r' > private_key.pem
           chmod 600 private_key.pem
+
+      - name: Debug SSH Connection
+        run: |
+          ssh -vvv -o StrictHostKeyChecking=no -i private_key.pem ec2-user@${{ secrets.AWS_EC2_IP }} "echo Connected successfully!"
 
       # Step 5: Deploy ke EC2 Server
       - name: Deploy to EC2 Server
