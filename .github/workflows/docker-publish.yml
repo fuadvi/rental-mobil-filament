@@ -10,18 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     environment: rental_mobil
     steps:
-      # Step 1: Checkout kode dari repository
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Login ke DockerHub
       - name: Log in to DockerHub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # Step 3: Build dan Push Docker Image
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
@@ -29,7 +26,6 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/laravel_franken:latest
 
-      # Step 4: Simpan SSH Key ke File
       - name: Create SSH Key File
         run: |
           echo "${{ secrets.AWS_EC2_KEY }}" | tr -d '\r' > private_key.pem
@@ -39,7 +35,6 @@ jobs:
         run: |
           ssh -vvv -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.AWS_EC2_IP }} "echo Connected successfully!"
 
-      # Step 5: Deploy ke EC2 Server
       - name: Deploy to EC2 Server
         run: |
           ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.AWS_EC2_IP }} << 'EOF'
